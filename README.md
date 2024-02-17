@@ -11,7 +11,7 @@ Proof of concept Service Worker that intercepts all the requests of an ecommerce
   (For context: "The average web page load time is 2500ms seconds on desktop and 8600ms seconds on mobile" Source: https://www.tooltester.com/en/blog/website-loading-time-statistics/)
 - Continues to operate offline.
 
-[Service Worker IndexDB Cart](https://github.com/adriablancafort/indexdb-sw-cart/assets/76774853/569579ca-a588-4560-8820-933a15bfe59b)
+![Service Worker IndexDB Cart](https://github.com/adriablancafort/indexdb-sw-cart/assets/76774853/569579ca-a588-4560-8820-933a15bfe59b)
 
 ## Technologies Used
 
