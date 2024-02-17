@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://127.0.0.1:5500/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Service Worker IndexDB Cart_files/styles.css">
+    <title>Service Worker IndexDB Cart</title>
+</head>
+
+<body>
+    <div>
+        <h2>Cart</h2>
+        <ul id="cart"></ul>
+    </div>
+
+    <button id="add-to-cart">Add to cart</button>
+
+    <p>
+        <img src="./Service Worker IndexDB Cart_files/Image_created_with_a_mobile_phone.png" alt="Cart Image">
+    </p>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+<script>
+    // Register service worker
+    document.addEventListener('DOMContentLoaded', () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    });
+
+    const addToCart = document.getElementById('add-to-cart');
+    const cart = document.getElementById('cart');
+    let count = 1;
+
+    // Fetch cart
+    const updateCart = () => {
+        fetch('https://fakestoreapi.com/carts/1')
+            .then(response => response.json())
+            .then(data => {
+                cart.innerHTML = '';
+                data.forEach(product => {
+                    const li = document.createElement('li');
+                    li.textContent = `${product.name}, Id: ${product.id}, ${product.price}`;
+                    cart.appendChild(li);
+                });
+            });
+    };
+
+    // Add to cart
+    addToCart.addEventListener('click', () => {
+        fetch('https://fakestoreapi.com/carts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: count,
+                name: 'Cart Item',
+                price: 100,
+            }),
+        })
+            .then(updateCart)
+            .then(() => { count++ });
+    });
+
+    // Page load
+    window.addEventListener('load', updateCart);
+</script>
+
+</body></html>
